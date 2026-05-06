@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: health-track-api
+
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration-minutes: ${JWT_EXPIRATION}
+
+  datasource:
+      url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:health_track_db}
+      username: ${DB_USER:postgres}
+      password: ${DB_PASSWORD:postgres}
+      driver-class-name: org.postgresql.Driver
+
+  jpa:
+      hibernate:
+        ddl-auto: update  # crea o actualiza las tablas autom�ticamente
+      show-sql: true       # muestra las queries en consola
+      properties:
+        hibernate:
+          format_sql: true
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  sql:
+      init:
+        mode: always
+
+  server:
+    port: 8080
