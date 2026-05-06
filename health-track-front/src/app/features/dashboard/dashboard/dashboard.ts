@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { RecordDetailDialog } from '../record-detail-dialog/record-detail-dialog';
 import { CreateRecordDialog } from '../create-record-dialog/create-record-dialog';
+import { User } from '../../../core/services/user';
 
 interface UserResponse {
   uuid: string;
@@ -65,16 +66,24 @@ export class Dashboard implements OnInit {
   recentRecords: HealthRecord[] = [];
 
   constructor(
+    private userService: User,
     private route: ActivatedRoute,
     private dialog: MatDialog
   ) { }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      if (params['user']) {
-        this.user = JSON.parse(params['user']);
+
+    const uuid = this.route.snapshot.paramMap.get('uuid');
+
+    if (!uuid) return;
+
+    this.userService.getUser(uuid).subscribe({
+      next: (user: UserResponse) => {
+        console.log(user)
+        this.user = user;
         this.generateMockData();
-      }
+      },
+      error: (err) => console.error(err)
     });
   }
 

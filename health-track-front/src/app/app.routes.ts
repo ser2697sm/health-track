@@ -21,7 +21,7 @@ export const routes: Routes = [
                 component: UserList
             },
             {
-                path: 'dashboard',
+                path: 'dashboard/:uuid',
                 component: Dashboard
             }
         ]
