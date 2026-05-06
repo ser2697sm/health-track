@@ -75,7 +75,7 @@ export class UserList implements OnInit {
 
   viewUser(user: UserResponse) {
     console.log(user)
-    this.router.navigate(['/dashboard'], { queryParams: { user: JSON.stringify(user) } });
+    this.router.navigate(['/dashboard', user.uuid]);
   }
 
   openCreateUserDialog() {

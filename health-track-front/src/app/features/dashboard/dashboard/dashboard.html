@@ -13,16 +13,15 @@
     </button>
   </header>
 
-  <div class="user-info-card">
+  <div class="user-info-card" *ngIf="user">
     <div class="user-avatar">{{ getInitials() }}</div>
+
     <div class="user-details">
-      <h2>{{ user?.firstName }} {{ user?.lastName }}</h2>
-      <p>{{ user?.email }}</p>
-      <span class="status-badge" [class.active]="user?.enabled">
-        {{ user?.enabled ? 'Activo' : 'Pendiente' }}
-      </span>
+      <h2>{{ user.firstName }} {{ user.lastName }}</h2>
+      <p>{{ user.email }}</p>
     </div>
   </div>
+
 
   <div class="metrics-grid">
     <mat-card class="metric-card">
@@ -119,17 +118,17 @@
           </thead>
           <tbody>
             @for (record of recentRecords; track record.fecha) {
-              <tr>
-                <td>{{ record.fecha }}</td>
-                <td>{{ record.peso }} kg</td>
-                <td>{{ record.imc }}</td>
-                <td>{{ record.notes }}</td>
-                <td>
-                  <button mat-stroked-button class="detail-btn" (click)="openRecordDetail(record)">
-                    Ver detalle
-                  </button>
-                </td>
-              </tr>
+            <tr>
+              <td>{{ record.fecha }}</td>
+              <td>{{ record.peso }} kg</td>
+              <td>{{ record.imc }}</td>
+              <td>{{ record.notes }}</td>
+              <td>
+                <button mat-stroked-button class="detail-btn" (click)="openRecordDetail(record)">
+                  Ver detalle
+                </button>
+              </td>
+            </tr>
             }
           </tbody>
         </table>

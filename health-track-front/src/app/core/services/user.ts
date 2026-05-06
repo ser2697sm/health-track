@@ -23,4 +23,8 @@ export class User {
     return this.http.post<UserResponse>(this.apiUrl + '/register', value)
   }
 
+  getUser(uuid: string): Observable<UserResponse> {
+    return this.http.get<UserResponse>(this.apiUrl + '/getUser/' + uuid)
+  }
+
 }
