@@ -1,0 +1,76 @@
+<section class="user-list-page">
+  <header class="page-header">
+    <div>
+      <h1>Usuarios</h1>
+      <p>Gestiona los usuarios de Health Track</p>
+    </div>
+
+    <button mat-flat-button class="create-button" (click)="openCreateUserDialog()">
+      <mat-icon>add</mat-icon>
+      Crear usuario
+    </button>
+  </header>
+
+  <div class="search-bar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Buscar por nombre o email</mat-label>
+      <input matInput [(ngModel)]="searchTerm" placeholder="Ej: Juan, juan@email.com">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <mat-card class="table-card">
+    <table mat-table [dataSource]="filteredUsers">
+
+      <ng-container matColumnDef="avatar">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let user">
+          <div class="avatar">{{ getInitials(user) }}</div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let user">
+          <div class="user-name">
+            <span class="primary">{{ user.firstName }} {{ user.lastName }} {{ user.secondName }}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Estado</th>
+        <td mat-cell *matCellDef="let user">
+          <span class="status-badge" [class.active]="user.enabled">
+            <span class="dot"></span>
+            {{ user.enabled ? 'Activo' : 'Pendiente' }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let user">
+          <button mat-stroked-button class="select-btn" (click)="viewUser(user)">
+            Seleccionar
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    @if (filteredUsers.length === 0) {
+    <div class="empty-state">
+      <mat-icon>person_off</mat-icon>
+      <p>No se encontraron usuarios</p>
+    </div>
+    }
+  </mat-card>
+</section>

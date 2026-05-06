@@ -1,0 +1,139 @@
+<div class="dashboard-page">
+  <header class="page-header">
+    <div class="header-left">
+      <a routerLink="/admin/users" class="back-link">
+        <mat-icon>arrow_back</mat-icon>
+        Volver
+      </a>
+      <h1>Panel de Usuario</h1>
+    </div>
+    <button mat-flat-button class="create-record-btn" (click)="openCreateRecordDialog()">
+      <mat-icon>add</mat-icon>
+      Nuevo Registro
+    </button>
+  </header>
+
+  <div class="user-info-card">
+    <div class="user-avatar">{{ getInitials() }}</div>
+    <div class="user-details">
+      <h2>{{ user?.firstName }} {{ user?.lastName }}</h2>
+      <p>{{ user?.email }}</p>
+      <span class="status-badge" [class.active]="user?.enabled">
+        {{ user?.enabled ? 'Activo' : 'Pendiente' }}
+      </span>
+    </div>
+  </div>
+
+  <div class="metrics-grid">
+    <mat-card class="metric-card">
+      <div class="metric-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <mat-icon>fitness_center</mat-icon>
+      </div>
+      <div class="metric-content">
+        <span class="metric-label">Peso</span>
+        <span class="metric-value">{{ metrics.peso }} <small>kg</small></span>
+      </div>
+    </mat-card>
+
+    <mat-card class="metric-card">
+      <div class="metric-icon" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+        <mat-icon>height</mat-icon>
+      </div>
+      <div class="metric-content">
+        <span class="metric-label">Altura</span>
+        <span class="metric-value">{{ metrics.altura }} <small>cm</small></span>
+      </div>
+    </mat-card>
+
+    <mat-card class="metric-card">
+      <div class="metric-icon" [style.background]="getImcColor()">
+        <mat-icon>monitor_weight</mat-icon>
+      </div>
+      <div class="metric-content">
+        <span class="metric-label">IMC</span>
+        <span class="metric-value">{{ metrics.imc }}</span>
+        <span class="metric-category">{{ getImcCategory() }}</span>
+      </div>
+    </mat-card>
+
+    <mat-card class="metric-card">
+      <div class="metric-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+        <mat-icon>percent</mat-icon>
+      </div>
+      <div class="metric-content">
+        <span class="metric-label">Grasa Corporal</span>
+        <span class="metric-value">{{ metrics.grasaCorporal }} <small>%</small></span>
+      </div>
+    </mat-card>
+
+    <mat-card class="metric-card">
+      <div class="metric-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+        <mat-icon>肌肉</mat-icon>
+      </div>
+      <div class="metric-content">
+        <span class="metric-label">Masa Muscular</span>
+        <span class="metric-value">{{ metrics.masaMuscular }} <small>kg</small></span>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="sections-row">
+    <section class="measurements-section">
+      <h3>Medidas Corporales</h3>
+      <mat-card class="measurements-card">
+        <div class="measurement-item">
+          <span class="measurement-label">Pecho</span>
+          <span class="measurement-value">{{ measurements.pecho }} cm</span>
+        </div>
+        <div class="measurement-item">
+          <span class="measurement-label">Cintura</span>
+          <span class="measurement-value">{{ measurements.cintura }} cm</span>
+        </div>
+        <div class="measurement-item">
+          <span class="measurement-label">Cadera</span>
+          <span class="measurement-value">{{ measurements.cadera }} cm</span>
+        </div>
+        <div class="measurement-item">
+          <span class="measurement-label">Bíceps</span>
+          <span class="measurement-value">{{ measurements.biceps }} cm</span>
+        </div>
+        <div class="measurement-item">
+          <span class="measurement-label">Muslo</span>
+          <span class="measurement-value">{{ measurements.muslo }} cm</span>
+        </div>
+      </mat-card>
+    </section>
+
+    <section class="records-section">
+      <h3>Últimos Registros</h3>
+      <mat-card class="records-card">
+        <table class="records-table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Peso</th>
+              <th>IMC</th>
+              <th>Notas</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (record of recentRecords; track record.fecha) {
+              <tr>
+                <td>{{ record.fecha }}</td>
+                <td>{{ record.peso }} kg</td>
+                <td>{{ record.imc }}</td>
+                <td>{{ record.notes }}</td>
+                <td>
+                  <button mat-stroked-button class="detail-btn" (click)="openRecordDetail(record)">
+                    Ver detalle
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </mat-card>
+    </section>
+  </div>
+</div>

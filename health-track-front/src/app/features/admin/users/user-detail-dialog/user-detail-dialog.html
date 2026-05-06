@@ -1,0 +1,21 @@
+<div class="user-detail">
+  <div class="avatar">{{ initials }}</div>
+
+  <h2>{{ user.firstName }} {{ user.lastName }}{{ user.secondName ? ' ' + user.secondName : '' }}</h2>
+
+  <div class="info-row">
+    <mat-icon>email</mat-icon>
+    <span>{{ user.email }}</span>
+  </div>
+
+  <div class="info-row">
+    <mat-icon>{{ user.enabled ? 'check_circle' : 'pending' }}</mat-icon>
+    <span class="status-badge" [class.active]="user.enabled">
+      {{ user.enabled ? 'Activo' : 'Pendiente' }}
+    </span>
+  </div>
+
+  <div class="actions">
+    <button mat-flat-button color="primary" (click)="close()">Cerrar</button>
+  </div>
+</div>

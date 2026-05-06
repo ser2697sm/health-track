@@ -1,0 +1,94 @@
+<div class="record-detail">
+  <div class="dialog-header">
+    <h2>Detalle del Registro</h2>
+    <span class="date">{{ record.fecha }}</span>
+  </div>
+
+  <div class="section">
+    <h4>Métricas Principales</h4>
+    <div class="metrics-row">
+      <div class="metric-item">
+        <mat-icon>fitness_center</mat-icon>
+        <div class="metric-info">
+          <span class="label">Peso</span>
+          <span class="value">{{ record.peso }} kg</span>
+        </div>
+      </div>
+      <div class="metric-item">
+        <mat-icon>monitor_weight</mat-icon>
+        <div class="metric-info">
+          <span class="label">IMC</span>
+          <span class="value">{{ record.imc }}</span>
+        </div>
+      </div>
+      @if (record.pesoAnterior) {
+      <div class="metric-item">
+        <mat-icon>trending_down</mat-icon>
+        <div class="metric-info">
+          <span class="label">Variación</span>
+          <span class="value" [class.positive]="record.peso < record.pesoAnterior">
+            {{ (record.peso - record.pesoAnterior).toFixed(1) }} kg
+          </span>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>Composición Corporal</h4>
+    <div class="metrics-row">
+      <div class="metric-item">
+        <mat-icon>percent</mat-icon>
+        <div class="metric-info">
+          <span class="label">Grasa Corporal</span>
+          <span class="value">{{ record.grasaCorporal || 18.5 }}%</span>
+        </div>
+      </div>
+      <div class="metric-item">
+        <mat-icon>肌肉</mat-icon>
+        <div class="metric-info">
+          <span class="label">Masa Muscular</span>
+          <span class="value">{{ record.masaMuscular || 35.2 }} kg</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>Medidas Corporales</h4>
+    <div class="measurements-grid">
+      <div class="measurement-item">
+        <span class="label">Pecho</span>
+        <span class="value">{{ record.pecho || 102 }} cm</span>
+      </div>
+      <div class="measurement-item">
+        <span class="label">Cintura</span>
+        <span class="value">{{ record.cintura || 82 }} cm</span>
+      </div>
+      <div class="measurement-item">
+        <span class="label">Cadera</span>
+        <span class="value">{{ record.cadera || 98 }} cm</span>
+      </div>
+      <div class="measurement-item">
+        <span class="label">Bíceps</span>
+        <span class="value">{{ record.biceps || 35 }} cm</span>
+      </div>
+      <div class="measurement-item">
+        <span class="label">Muslo</span>
+        <span class="value">{{ record.muslo || 56 }} cm</span>
+      </div>
+    </div>
+  </div>
+
+  @if (record.notes) {
+  <div class="section">
+    <h4>Notas</h4>
+    <p class="notes">{{ record.notes }}</p>
+  </div>
+  }
+
+  <div class="actions">
+    <button mat-flat-button color="primary" (click)="close()">Cerrar</button>
+  </div>
+</div>

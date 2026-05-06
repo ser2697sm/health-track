@@ -1,0 +1,39 @@
+<div class="login-page">
+    <section class="login-box">
+        <header class="login-header">
+            <h1>Bienvenido a Health Track</h1>
+        </header>
+
+        <form [formGroup]="form" (submit)="onSubmit($event)" class="login-form">
+            <label>Email</label>
+            <mat-form-field appearance="outline">
+                <input matInput type="email" formControlName="email" placeholder="you@example.com" />
+
+                @if (form.controls.email.hasError('required') && (form.controls.email.dirty ||
+                form.controls.email.touched)) {
+                <mat-error>El email es obligatorio</mat-error>
+                }
+
+                @if (form.controls.email.hasError('pattern') && (form.controls.email.dirty ||
+                form.controls.email.touched)) {
+                <mat-error>Introduce un email válido</mat-error>
+                }
+            </mat-form-field>
+
+            <label>Contraseña</label>
+            <mat-form-field appearance="outline">
+                <input matInput type="password" formControlName="password" placeholder="••••••••" />
+                <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+                    <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+                </button>
+                @if (form.controls.password.hasError('required') && form.controls.password.touched) {
+                <mat-error>La contraseña es obligatoria</mat-error>
+                }
+            </mat-form-field>
+
+            <button mat-flat-button type="submit" class="login-button">
+                Entrar
+            </button>
+        </form>
+    </section>
+</div>

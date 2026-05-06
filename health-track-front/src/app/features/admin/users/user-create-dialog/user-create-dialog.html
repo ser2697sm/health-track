@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>Crear usuario</h2>
+
+<mat-dialog-content>
+    <form [formGroup]="form" class="user-form">
+        <mat-form-field appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="firstName" />
+            @if (form.controls.firstName.touched && form.controls.firstName.hasError('required')) {
+            <mat-error>El nombre es obligatorio</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Primer apellido</mat-label>
+            <input matInput formControlName="lastName" />
+            @if (form.controls.lastName.touched && form.controls.lastName.hasError('required')) {
+            <mat-error>El apellido es obligatorio</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Segundo apellido</mat-label>
+            <input matInput formControlName="secondName" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" />
+            @if (form.controls.email.touched && form.controls.email.hasError('required')) {
+            <mat-error>El email es obligatorio</mat-error>
+            }
+            @if (form.controls.email.touched && form.controls.email.hasError('pattern')) {
+            <mat-error>Introduce un email válido</mat-error>
+            }
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="close()">Cancelar</button>
+    <button mat-flat-button type="button" (click)="createUser()">Crear</button>
+</mat-dialog-actions>

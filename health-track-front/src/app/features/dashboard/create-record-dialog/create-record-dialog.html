@@ -1,0 +1,83 @@
+<div class="create-record-dialog">
+  <h2>Nuevo Registro</h2>
+  <p class="subtitle">Añade los datos de tu nuevo registro de salud</p>
+
+  <form [formGroup]="form">
+    <div class="section">
+      <h4>Métricas</h4>
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Peso (kg)</mat-label>
+          <input matInput type="number" formControlName="peso">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Grasa corporal (%)</mat-label>
+          <input matInput type="number" formControlName="grasaCorporal">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Masa muscular (kg)</mat-label>
+          <input matInput type="number" formControlName="masaMuscular">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Medidas Corporales</h4>
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Pecho (cm)</mat-label>
+          <input matInput type="number" formControlName="pecho">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Cintura (cm)</mat-label>
+          <input matInput type="number" formControlName="cintura">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Cadera (cm)</mat-label>
+          <input matInput type="number" formControlName="cadera">
+        </mat-form-field>
+      </div>
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Bíceps (cm)</mat-label>
+          <input matInput type="number" formControlName="biceps">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Muslo (cm)</mat-label>
+          <input matInput type="number" formControlName="muslo">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Salud Cardiovascular (opcional)</h4>
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Frecuencia cardíaca (lpm)</mat-label>
+          <input matInput type="number" formControlName="frecuenciaCardiaca">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Presión sistólica</mat-label>
+          <input matInput type="number" formControlName="presionSistolica">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Presión diastólica</mat-label>
+          <input matInput type="number" formControlName="presionDiastolica">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Notas (opcional)</h4>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Notas</mat-label>
+        <textarea matInput formControlName="notes" rows="2"></textarea>
+      </mat-form-field>
+    </div>
+  </form>
+
+  <div class="actions">
+    <button mat-stroked-button (click)="cancel()">Cancelar</button>
+    <button mat-flat-button color="primary" (click)="save()">Guardar</button>
+  </div>
+</div>
