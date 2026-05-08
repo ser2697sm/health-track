@@ -8,6 +8,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { RecordDetailDialog } from '../record-detail-dialog/record-detail-dialog';
 import { CreateRecordDialog } from '../create-record-dialog/create-record-dialog';
 import { User } from '../../../core/services/user';
+import { ChangeDetectorRef } from '@angular/core';
 
 interface UserResponse {
   uuid: string;
@@ -68,24 +69,29 @@ export class Dashboard implements OnInit {
   constructor(
     private userService: User,
     private route: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+     private cdr: ChangeDetectorRef
   ) { }
 
-  ngOnInit() {
+ngOnInit() {
+  const uuid = this.route.snapshot.paramMap.get('uuid');
+  console.log('UUID ruta:', uuid);
 
-    const uuid = this.route.snapshot.paramMap.get('uuid');
+  this.generateMockData();
 
-    if (!uuid) return;
+  if (!uuid) return;
 
-    this.userService.getUser(uuid).subscribe({
-      next: (user: UserResponse) => {
-        console.log(user)
-        this.user = user;
-        this.generateMockData();
-      },
-      error: (err) => console.error(err)
-    });
-  }
+  this.userService.getUser(uuid).subscribe({
+    next: (response: UserResponse) => {
+
+      this.user = response;
+      this.cdr.detectChanges();
+    },
+    error: (err) => {
+      console.error('ERROR GET USER:', err);
+    }
+  });
+}
 
   generateMockData() {
     this.metrics = {
