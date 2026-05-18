@@ -1,7 +1,7 @@
-package com.sergio.healthtrack.healthRecord.controller;
+package com.sergio.healthtrack.initialHealthRecordEntity.controller;
 
-import com.sergio.healthtrack.healthRecord.dto.request.HealthRecordRequest;
-import com.sergio.healthtrack.healthRecord.service.HealthRecordService;
+import com.sergio.healthtrack.initialHealthRecordEntity.dto.request.InitialHealthRecordRequest;
+import com.sergio.healthtrack.initialHealthRecordEntity.service.InitialHealthRecordService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,18 +10,18 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/admin/health-records")
-public class HealthRecordController {
+public class InitialHealthRecordController {
 
-    private final HealthRecordService healthRecordService;
+    private final InitialHealthRecordService healthRecordService;
 
-    public HealthRecordController(HealthRecordService healthRecordService) {
+    public InitialHealthRecordController(InitialHealthRecordService healthRecordService) {
         this.healthRecordService = healthRecordService;
     }
 
     @PostMapping("create/{userId}")
     public ResponseEntity<?> create(
             @PathVariable UUID userId,
-            @RequestBody @Valid HealthRecordRequest recordRequest) {
+            @RequestBody @Valid InitialHealthRecordRequest recordRequest) {
         healthRecordService.create(userId,recordRequest);
         return ResponseEntity.ok("Creado correctamente");
     }

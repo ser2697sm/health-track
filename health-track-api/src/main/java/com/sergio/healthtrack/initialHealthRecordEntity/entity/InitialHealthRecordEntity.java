@@ -1,4 +1,4 @@
-package com.sergio.healthtrack.healthRecord.entity;
+package com.sergio.healthtrack.initialHealthRecordEntity.entity;
 
 import com.sergio.healthtrack.common.GenderEnum;
 import com.sergio.healthtrack.common.LevelActivityEnum;
@@ -17,8 +17,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "healthRecord")
-public class HealthRecordEntity {
+@Table(name = "initialHealthRecordEntity")
+public class InitialHealthRecordEntity {
 
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "user_id",nullable = false)

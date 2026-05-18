@@ -1,4 +1,4 @@
-package com.sergio.healthtrack.healthRecord.dto.response;
+package com.sergio.healthtrack.initialHealthRecordEntity.dto.response;
 
 import com.sergio.healthtrack.common.GenderEnum;
 import com.sergio.healthtrack.common.LevelActivityEnum;
@@ -10,7 +10,7 @@ import lombok.Builder;
 import java.math.BigDecimal;
 
 @Builder
-public record HealthRecordResponse(
+public record InitialHealthRecordResponse(
         BigDecimal height,
         BigDecimal peso,
         int age,

@@ -1,40 +1,37 @@
-package com.sergio.healthtrack.healthRecord.service.impl;
+package com.sergio.healthtrack.initialHealthRecordEntity.service.impl;
 
-import com.sergio.healthtrack.healthRecord.dto.request.HealthRecordRequest;
-import com.sergio.healthtrack.healthRecord.dto.response.HealthRecordResponse;
-import com.sergio.healthtrack.healthRecord.entity.HealthRecordEntity;
-import com.sergio.healthtrack.healthRecord.repository.HealthRecordRepository;
-import com.sergio.healthtrack.healthRecord.service.HealthRecordService;
+import com.sergio.healthtrack.initialHealthRecordEntity.dto.request.InitialHealthRecordRequest;
+import com.sergio.healthtrack.initialHealthRecordEntity.dto.response.InitialHealthRecordResponse;
+import com.sergio.healthtrack.initialHealthRecordEntity.entity.InitialHealthRecordEntity;
+import com.sergio.healthtrack.initialHealthRecordEntity.repository.InitialHealthRecordRepository;
+import com.sergio.healthtrack.initialHealthRecordEntity.service.InitialHealthRecordService;
 import com.sergio.healthtrack.user.entity.UserEntity;
 import com.sergio.healthtrack.user.repository.UserRepository;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 @Service
-public class HealthRecordServiceImpl implements HealthRecordService {
+public class InitialHealthRecordServiceImpl implements InitialHealthRecordService {
 
-    private final HealthRecordRepository healthRecordRepository;
+    private final InitialHealthRecordRepository healthRecordRepository;
     private final UserRepository userRepository;
 
-    public HealthRecordServiceImpl(HealthRecordRepository healthRecordRepository, UserRepository userRepository) {
+    public InitialHealthRecordServiceImpl(InitialHealthRecordRepository healthRecordRepository, UserRepository userRepository) {
         this.healthRecordRepository = healthRecordRepository;
         this.userRepository = userRepository;
     }
 
 
     @Override
-    public void create(UUID uuid, HealthRecordRequest recordRequest) {
+    public void create(UUID uuid, InitialHealthRecordRequest recordRequest) {
 
         UserEntity userEntity = userRepository.findById(uuid).orElseThrow(
                 () -> new RuntimeException("Usuario no encontrado"));
 
-        HealthRecordEntity healthRecordEntity = HealthRecordEntity.builder()
+        InitialHealthRecordEntity healthRecordEntity = InitialHealthRecordEntity.builder()
                 .userId(userEntity)
                 .height(recordRequest.height())
                 .peso(recordRequest.peso())
@@ -51,12 +48,12 @@ public class HealthRecordServiceImpl implements HealthRecordService {
     }
 
     @Override
-    public List<HealthRecordResponse> viewRecord(UUID userId) {
+    public List<InitialHealthRecordResponse> viewRecord(UUID userId) {
 
-        List<HealthRecordEntity> healthRecordEntity =  healthRecordRepository.findByUserId_Id(userId);
+        List<InitialHealthRecordEntity> healthRecordEntity =  healthRecordRepository.findByUserId_Id(userId);
 
         return healthRecordEntity.stream().map(
-                healRecord -> new HealthRecordResponse(
+                healRecord -> new InitialHealthRecordResponse(
                         healRecord.getHeight(),
                         healRecord.getPeso(),
                         healRecord.getAge(),
