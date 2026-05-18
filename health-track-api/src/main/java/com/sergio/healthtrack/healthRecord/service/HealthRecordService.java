@@ -9,5 +9,5 @@ import java.util.UUID;
 public interface HealthRecordService {
 
     void create(UUID uuid,HealthRecordRequest recordRequest);
-    List<HealthRecordResponse> viewRecord();
+    List<HealthRecordResponse> viewRecord(UUID userId);
 }

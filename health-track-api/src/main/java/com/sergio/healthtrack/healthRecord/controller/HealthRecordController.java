@@ -26,8 +26,8 @@ public class HealthRecordController {
         return ResponseEntity.ok("Creado correctamente");
     }
 
-    @GetMapping("viewRecord")
-    public ResponseEntity<?> viewRecord() {
-       return ResponseEntity.ok(healthRecordService.viewRecord());
+    @GetMapping("viewRecord/{userId}")
+    public ResponseEntity<?> viewRecord( @PathVariable UUID userId) {
+       return ResponseEntity.ok(healthRecordService.viewRecord(userId));
     }
 }

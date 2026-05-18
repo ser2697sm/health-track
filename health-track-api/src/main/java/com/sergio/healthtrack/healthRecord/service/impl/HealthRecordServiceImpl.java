@@ -51,9 +51,9 @@ public class HealthRecordServiceImpl implements HealthRecordService {
     }
 
     @Override
-    public List<HealthRecordResponse> viewRecord() {
+    public List<HealthRecordResponse> viewRecord(UUID userId) {
 
-        List<HealthRecordEntity> healthRecordEntity =  healthRecordRepository.findAll();
+        List<HealthRecordEntity> healthRecordEntity =  healthRecordRepository.findByUserId_Id(userId);
 
         return healthRecordEntity.stream().map(
                 healRecord -> new HealthRecordResponse(

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -88,22 +88,23 @@ export class Dashboard implements OnInit {
 
   ngOnInit() {
 
-    this.userId = this.route.snapshot.paramMap.get('uuid');
+    this.route.paramMap.subscribe(params => {
+      this.userId = params.get('uuid');
 
-    if (!this.userId) return;
+      if (!this.userId) return;
 
-    this.userService.getUser(this.userId).subscribe({
-      next: (response: UserResponse) => {
-        console.log("EL usuario es" + response)
-        this.user = response;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('ERROR GET USER:', err);
-      }
+      this.userService.getUser(this.userId).subscribe({
+        next: (response: UserResponse) => {
+          this.user = response;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('ERROR GET USER:', err);
+        }
+      });
+
+      this.getViewRecord();
     });
-
-    this.getViewRecord();
   }
 
   getInitials(): string {
@@ -114,9 +115,12 @@ export class Dashboard implements OnInit {
   }
 
   getViewRecord() {
-    this.healthRecordService.viewRecord().subscribe({
+
+    if (!this.userId) return;
+
+    this.healthRecordService.viewRecord(this.userId).subscribe({
       next: (response) => {
-        console.log(response)
+        console.log("Los datos del usuario son: " + response)
         this.records = response;
         this.hasInitialRecord = response.length > 0;
         this.latestRecord = response.at(-1) ?? null;
@@ -138,6 +142,8 @@ export class Dashboard implements OnInit {
           imc: this.calculateImc(record.peso, record.height),
           esInicial: index === 0,
         }));
+
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('ERROR GET HEALTH RECORDS:', err);
