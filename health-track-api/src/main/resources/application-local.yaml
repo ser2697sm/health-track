@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: health-track-api
+
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration-minutes: ${JWT_EXPIRATION}
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/health_track_db_local
+    username: sergiomartinez
+    password: hermanos16?
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+app:
+  admin:
+    email: admin@admin.com
+    password: admin

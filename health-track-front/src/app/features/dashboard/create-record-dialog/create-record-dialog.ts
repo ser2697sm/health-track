@@ -36,9 +36,9 @@ export class CreateRecordDialog {
       cadera: ['', [Validators.required, Validators.min(1)]],
       biceps: ['', [Validators.required, Validators.min(1)]],
       muslo: ['', [Validators.required, Validators.min(1)]],
-      frecuenciaCardiaca: ['', [Validators.min(1)]],
-      presionSistolica: ['', [Validators.min(1)]],
-      presionDiastolica: ['', [Validators.min(1)]],
+      frecuenciaCardiaca: [''],
+      presionSistolica: [''],
+      presionDiastolica: [''],
       notes: [''],
     });
   }
@@ -47,16 +47,11 @@ export class CreateRecordDialog {
     if (this.form.valid) {
       const today = new Date();
       const fecha = `${today.getDate().toString().padStart(2, '0')}/${(today.getMonth() + 1).toString().padStart(2, '0')}/${today.getFullYear()}`;
-      
+
       const weight = this.form.value.peso;
-      const height = 175;
-      const imc = weight / ((height / 100) ** 2);
-      
-      const record = {
+      const record = this.dialogRef.close({
         fecha,
         peso: weight,
-        imc: parseFloat(imc.toFixed(1)),
-        pesoAnterior: 72.5,
         grasaCorporal: this.form.value.grasaCorporal,
         masaMuscular: this.form.value.masaMuscular,
         pecho: this.form.value.pecho,
@@ -64,13 +59,11 @@ export class CreateRecordDialog {
         cadera: this.form.value.cadera,
         biceps: this.form.value.biceps,
         muslo: this.form.value.muslo,
-        frecuenciaCardiaca: this.form.value.frecuenciaCardiaca || 72,
-        presionSistolica: this.form.value.presionSistolica || 120,
-        presionDiastolica: this.form.value.presionDiastolica || 80,
-        notes: this.form.value.notes || 'Nuevo registro',
-      };
-      
-      this.dialogRef.close(record);
+        frecuenciaCardiaca: this.form.value.frecuenciaCardiaca,
+        presionSistolica: this.form.value.presionSistolica,
+        presionDiastolica: this.form.value.presionDiastolica,
+        notes: this.form.value.notes || 'Registro semanal',
+      });
     } else {
       this.form.markAllAsTouched();
     }

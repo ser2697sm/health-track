@@ -1,0 +1,78 @@
+<div class="initial-record-dialog">
+  <div class="dialog-header">
+    <h2>Registro Inicial</h2>
+    <p class="subtitle">Completa tu primer registro para comenzar a trackear tu salud</p>
+  </div>
+
+  <form [formGroup]="form">
+    <div class="section">
+      <h4>Datos Personales</h4>
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Sexo</mat-label>
+          <mat-select formControlName="gender">
+            <mat-option value="MASCULINO">Masculino</mat-option>
+            <mat-option value="FEMENINO">Femenino</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Edad</mat-label>
+          <input matInput type="number" formControlName="age">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Altura (cm)</mat-label>
+          <input matInput type="number" formControlName="height">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Peso actual (kg)</mat-label>
+          <input matInput type="number" formControlName="peso">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Composición Corporal</h4>
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Grasa corporal (%)</mat-label>
+          <input matInput type="number" formControlName="bodyFat">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Masa muscular (kg)</mat-label>
+          <input matInput type="number" formControlName="muscleMass">
+        </mat-form-field>
+      </div>
+    </div>
+
+
+    <div class="section">
+      <h4>Objetivos</h4>
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Nivel de actividad física</mat-label>
+          <mat-select formControlName="levelActivity">
+            <mat-option value="SEDENTARIO">Sedentario</mat-option>
+            <mat-option value="LIGERO">Ligero (1-3 días/semana)</mat-option>
+            <mat-option value="MODERADO">Moderado (3-5 días/semana)</mat-option>
+            <mat-option value="ACTIVO">Activo (6-7 días/semana)</mat-option>
+            <mat-option value="ATLETA">Atleta</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Objetivo</mat-label>
+          <mat-select formControlName="objective">
+            <mat-option value="PERDER_PESO">Perder peso</mat-option>
+            <mat-option value="GANAR_MASA_MUSCULAR">Ganar masa muscular</mat-option>
+            <mat-option value="MANTENER_PESO">Mantener peso</mat-option>
+            <mat-option value="DEFINIR_TONIFICAR">Definir / Tonificar</mat-option>
+            <mat-option value="MEJORAR_SALUD_GENERAL">Mejorar salud general</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+
+  <div class="actions">
+    <button mat-flat-button color="primary" (click)="save()">Guardar registro</button>
+  </div>
+</div>

@@ -50,24 +50,16 @@ export class UserCreateDialog {
       return;
     }
 
-    console.log(this.form.value);
-
     const request: CreateUserRequest = this.form.getRawValue();
 
     this.userService.createNewUser(request).subscribe({
       next: (response) => {
-        //console.log('Usuario creado con exito', response);
         this.dialogRef.close(true) // solo si va bien
       },
       error: (error) => {
         console.error('Error creando usuario', error);
       }
     })
-
-
-
-    // luego aquí llamaremos al backend
-    this.dialogRef.close(true);
   }
 
 }

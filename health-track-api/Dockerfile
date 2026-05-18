@@ -28,7 +28,7 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 # Expone el puerto 8080 (donde corre Spring Boot por defecto)
-EXPOSE 8080
+EXPOSE 8081
 
 # Comando que se ejecuta al arrancar el contenedor
 ENTRYPOINT ["java","-jar","app.jar"]

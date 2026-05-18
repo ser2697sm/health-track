@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @RequiredArgsConstructor
-@Profile("dev")
+@Profile({"local", "dev"})
 public class AdminInitializer {
 
     private final UserRepository userRepository;

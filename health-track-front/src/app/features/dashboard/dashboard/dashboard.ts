@@ -7,8 +7,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { RecordDetailDialog } from '../record-detail-dialog/record-detail-dialog';
 import { CreateRecordDialog } from '../create-record-dialog/create-record-dialog';
+import { InitialRecordDialog } from '../initial-record-dialog/initial-record-dialog';
 import { User } from '../../../core/services/user';
 import { ChangeDetectorRef } from '@angular/core';
+import { HealthRecord } from '../../../core/services/health-record';
+import { HealthRecordResponse } from '../../../core/models/response/healthRecord-response';
 
 interface UserResponse {
   uuid: string;
@@ -20,37 +23,26 @@ interface UserResponse {
 }
 
 interface HealthMetrics {
-  peso: number;
-  altura: number;
-  imc: number;
-  grasaCorporal: number;
-  masaMuscular: number;
+  peso: number | null;
+  altura: number | null;
+  imc: number | null;
+  grasaCorporal: number | null;
+  masaMuscular: number | null;
 }
 
 interface Measurements {
-  pecho: number;
-  cintura: number;
-  cadera: number;
-  biceps: number;
-  muslo: number;
+  pecho: number | null;
+  cintura: number | null;
+  cadera: number | null;
+  biceps: number | null;
+  muslo: number | null;
 }
 
-interface HealthRecord {
+interface DashboardRecord {
   fecha: string;
   peso: number;
-  imc: number;
-  notes: string;
-  pesoAnterior?: number;
-  grasaCorporal?: number;
-  masaMuscular?: number;
-  pecho?: number;
-  cintura?: number;
-  cadera?: number;
-  biceps?: number;
-  muslo?: number;
-  frecuenciaCardiaca?: number;
-  presionSistolica?: number;
-  presionDiastolica?: number;
+  imc: number | null;
+  esInicial?: boolean;
 }
 
 @Component({
@@ -62,60 +54,56 @@ interface HealthRecord {
 })
 export class Dashboard implements OnInit {
   user: UserResponse | null = null;
-  metrics: HealthMetrics = {} as HealthMetrics;
-  measurements: Measurements = {} as Measurements;
-  recentRecords: HealthRecord[] = [];
+  records: HealthRecordResponse[] = [];
+  latestRecord: HealthRecordResponse | null = null;
+
+  metrics: HealthMetrics = {
+    peso: null,
+    altura: null,
+    imc: null,
+    grasaCorporal: null,
+    masaMuscular: null,
+  };
+  measurements: Measurements = {
+    pecho: null,
+    cintura: null,
+    cadera: null,
+    biceps: null,
+    muslo: null,
+  };
+  userId: string | null = null;
+  recentRecords: DashboardRecord[] = [];
+  hasInitialRecord = false;
+  nivelActividad = '';
+  objetivo = '';
+  showWelcome = false;
 
   constructor(
+    private healthRecordService: HealthRecord,
     private userService: User,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-     private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef
   ) { }
 
-ngOnInit() {
-  const uuid = this.route.snapshot.paramMap.get('uuid');
-  console.log('UUID ruta:', uuid);
+  ngOnInit() {
 
-  this.generateMockData();
+    this.userId = this.route.snapshot.paramMap.get('uuid');
 
-  if (!uuid) return;
+    if (!this.userId) return;
 
-  this.userService.getUser(uuid).subscribe({
-    next: (response: UserResponse) => {
+    this.userService.getUser(this.userId).subscribe({
+      next: (response: UserResponse) => {
+        console.log("EL usuario es" + response)
+        this.user = response;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('ERROR GET USER:', err);
+      }
+    });
 
-      this.user = response;
-      this.cdr.detectChanges();
-    },
-    error: (err) => {
-      console.error('ERROR GET USER:', err);
-    }
-  });
-}
-
-  generateMockData() {
-    this.metrics = {
-      peso: 72.5,
-      altura: 175,
-      imc: 23.7,
-      grasaCorporal: 18.5,
-      masaMuscular: 35.2
-    };
-
-    this.measurements = {
-      pecho: 102,
-      cintura: 82,
-      cadera: 98,
-      biceps: 35,
-      muslo: 56
-    };
-
-    this.recentRecords = [
-      { fecha: '05/05/2026', peso: 72.5, imc: 23.7, notes: 'Registro semanal', pesoAnterior: 73.1, grasaCorporal: 18.5, masaMuscular: 35.2, pecho: 102, cintura: 82, cadera: 98, biceps: 35, muslo: 56, frecuenciaCardiaca: 72, presionSistolica: 120, presionDiastolica: 80 },
-      { fecha: '28/04/2026', peso: 73.1, imc: 23.9, notes: 'Registro semanal', pesoAnterior: 73.8, grasaCorporal: 19.0, masaMuscular: 35.0, pecho: 103, cintura: 83, cadera: 99, biceps: 34, muslo: 55, frecuenciaCardiaca: 74, presionSistolica: 118, presionDiastolica: 78 },
-      { fecha: '21/04/2026', peso: 73.8, imc: 24.1, notes: 'Registro semanal', pesoAnterior: 74.2, grasaCorporal: 19.5, masaMuscular: 34.8, pecho: 104, cintura: 84, cadera: 100, biceps: 34, muslo: 54, frecuenciaCardiaca: 76, presionSistolica: 122, presionDiastolica: 82 },
-      { fecha: '14/04/2026', peso: 74.2, imc: 24.2, notes: 'Registro semanal', pesoAnterior: 74.5, grasaCorporal: 20.0, masaMuscular: 34.5, pecho: 104, cintura: 85, cadera: 101, biceps: 33, muslo: 53, frecuenciaCardiaca: 78, presionSistolica: 125, presionDiastolica: 85 },
-    ];
+    this.getViewRecord();
   }
 
   getInitials(): string {
@@ -125,25 +113,57 @@ ngOnInit() {
     return first + last;
   }
 
-  getImcCategory(): string {
-    if (this.metrics.imc < 18.5) return 'Bajo peso';
-    if (this.metrics.imc < 25) return 'Normal';
-    if (this.metrics.imc < 30) return 'Sobrepeso';
-    return 'Obesidad';
+  getViewRecord() {
+    this.healthRecordService.viewRecord().subscribe({
+      next: (response) => {
+        console.log(response)
+        this.records = response;
+        this.hasInitialRecord = response.length > 0;
+        this.latestRecord = response.at(-1) ?? null;
+
+        if (!this.latestRecord) return;
+
+        this.metrics = {
+          peso: this.latestRecord.peso,
+          altura: this.latestRecord.height,
+          imc: this.calculateImc(this.latestRecord.peso, this.latestRecord.height),
+          grasaCorporal: this.latestRecord.bodyFat,
+          masaMuscular: this.latestRecord.muscleMass,
+        };
+        this.nivelActividad = this.latestRecord.levelActivity;
+        this.objetivo = this.latestRecord.objective;
+        this.recentRecords = response.map((record, index) => ({
+          fecha: 'Sin fecha',
+          peso: record.peso,
+          imc: this.calculateImc(record.peso, record.height),
+          esInicial: index === 0,
+        }));
+      },
+      error: (err) => {
+        console.error('ERROR GET HEALTH RECORDS:', err);
+      }
+    })
   }
 
-  getImcColor(): string {
-    if (this.metrics.imc < 18.5) return '#f59e0b';
-    if (this.metrics.imc < 25) return '#10b981';
-    if (this.metrics.imc < 30) return '#f59e0b';
-    return '#ef4444';
+  calculateImc(peso: number, height: number): number {
+    if (!height) return 0;
+    const heightInMeters = height / 100;
+    return Number((peso / (heightInMeters * heightInMeters)).toFixed(1));
   }
 
-  openRecordDetail(record: HealthRecord) {
-    this.dialog.open(RecordDetailDialog, {
-      width: '480px',
-      data: record,
+  openInitialRecordDialog() {
+
+    if (!this.userId) return;
+
+    const dialogRef = this.dialog.open(InitialRecordDialog, {
+      width: '560px',
+      disableClose: true,
+      data: {
+        userId: this.userId
+      }
     });
+
+    dialogRef.afterClosed().subscribe(() => this.getViewRecord());
   }
 
   openCreateRecordDialog() {
@@ -152,21 +172,56 @@ ngOnInit() {
       disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result: HealthRecord | undefined) => {
-      if (result) {
-        this.recentRecords.unshift(result);
-        this.metrics.peso = result.peso;
-        this.metrics.grasaCorporal = result.grasaCorporal!;
-        this.metrics.masaMuscular = result.masaMuscular!;
-        this.metrics.imc = result.imc;
-        this.measurements = {
-          pecho: result.pecho!,
-          cintura: result.cintura!,
-          cadera: result.cadera!,
-          biceps: result.biceps!,
-          muslo: result.muslo!,
-        };
-      }
+    dialogRef.afterClosed().subscribe(() => this.getViewRecord());
+  }
+
+  openRecordDetail(record: DashboardRecord) {
+    this.dialog.open(RecordDetailDialog, {
+      width: '480px',
+      data: record,
     });
   }
+
+  getNivelActividadLabel(): string {
+    const labels: Record<string, string> = {
+      SEDENTARIO: 'Sedentario',
+      LIGERO: 'Ligero',
+      MODERADO: 'Moderado',
+      ACTIVO: 'Activo',
+      ATLETA: 'Atleta',
+    };
+
+    return labels[this.nivelActividad] ?? 'Sin definir';
+  }
+
+  getObjetivoLabel(): string {
+    const labels: Record<string, string> = {
+      PERDER_PESO: 'Perder peso',
+      GANAR_MASA_MUSCULAR: 'Ganar masa muscular',
+      MANTENER_PESO: 'Mantener peso',
+      DEFINIR_TONIFICAR: 'Definir / tonificar',
+      MEJORAR_SALUD_GENERAL: 'Mejorar salud general',
+    };
+
+    return labels[this.objetivo] ?? 'Sin definir';
+  }
+
+  getImcCategory(): string {
+    if (this.metrics.imc === null) return '';
+    if (this.metrics.imc < 18.5) return 'Bajo peso';
+    if (this.metrics.imc < 25) return 'Normal';
+    if (this.metrics.imc < 30) return 'Sobrepeso';
+    return 'Obesidad';
+  }
+
+  getImcColor(): string {
+    if (this.metrics.imc === null) {
+      return 'linear-gradient(135deg, #64748b 0%, #94a3b8 100%)';
+    }
+    if (this.metrics.imc < 18.5) return 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)';
+    if (this.metrics.imc < 25) return 'linear-gradient(135deg, #10b981 0%, #34d399 100%)';
+    if (this.metrics.imc < 30) return 'linear-gradient(135deg, #f59e0b 0%, #f97316 100%)';
+    return 'linear-gradient(135deg, #ef4444 0%, #f87171 100%)';
+  }
+
 }

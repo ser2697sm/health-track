@@ -16,7 +16,7 @@ interface LoginResponse {
 })
 export class Auth {
 
-  private readonly apiLogin = 'http://localhost:8080/api/auth';
+  private readonly apiLogin = '/api/auth';
 
   constructor(private http: HttpClient) { }
 

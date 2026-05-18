@@ -5,6 +5,13 @@ import { UserList } from './features/admin/users/user-list/user-list';
 import { Dashboard } from './features/dashboard/dashboard/dashboard';
 
 export const routes: Routes = [
+    // Redirección inicial
+    {
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full'
+    },
+
     // 🔓 Público
     {
         path: 'login',
@@ -28,11 +35,6 @@ export const routes: Routes = [
     },
 
     // Redirecciones
-    {
-        path: '',
-        redirectTo: 'login',
-        pathMatch: 'full'
-    },
     {
         path: '**',
         redirectTo: 'login'

@@ -1,6 +1,6 @@
 <div class="create-record-dialog">
-  <h2>Nuevo Registro</h2>
-  <p class="subtitle">Añade los datos de tu nuevo registro de salud</p>
+  <h2>Registro Semanal</h2>
+  <p class="subtitle">Añade los datos de tu nuevo registro semanal</p>
 
   <form [formGroup]="form">
     <div class="section">
@@ -51,9 +51,9 @@
 
     <div class="section">
       <h4>Salud Cardiovascular (opcional)</h4>
-      <div class="form-row">
+      <div class="form-row three-cols">
         <mat-form-field appearance="outline">
-          <mat-label>Frecuencia cardíaca (lpm)</mat-label>
+          <mat-label>Frec. cardíaca (lpm)</mat-label>
           <input matInput type="number" formControlName="frecuenciaCardiaca">
         </mat-form-field>
         <mat-form-field appearance="outline">

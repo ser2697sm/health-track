@@ -9,7 +9,7 @@ import { CreateUserRequest } from '../models/request/createUser-request';
 })
 export class User {
 
-  private readonly apiUrl = 'http://localhost:8080/api/admin'
+  private readonly apiUrl = '/api/admin'
 
   constructor(private http: HttpClient) { }
 

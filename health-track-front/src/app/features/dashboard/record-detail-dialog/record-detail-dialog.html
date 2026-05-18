@@ -42,14 +42,14 @@
         <mat-icon>percent</mat-icon>
         <div class="metric-info">
           <span class="label">Grasa Corporal</span>
-          <span class="value">{{ record.grasaCorporal || 18.5 }}%</span>
+          <span class="value">{{ record.grasaCorporal ?? '—' }}%</span>
         </div>
       </div>
       <div class="metric-item">
         <mat-icon>肌肉</mat-icon>
         <div class="metric-info">
           <span class="label">Masa Muscular</span>
-          <span class="value">{{ record.masaMuscular || 35.2 }} kg</span>
+          <span class="value">{{ record.masaMuscular ?? '—' }} kg</span>
         </div>
       </div>
     </div>
@@ -60,23 +60,23 @@
     <div class="measurements-grid">
       <div class="measurement-item">
         <span class="label">Pecho</span>
-        <span class="value">{{ record.pecho || 102 }} cm</span>
+        <span class="value">{{ record.pecho ?? '—' }} cm</span>
       </div>
       <div class="measurement-item">
         <span class="label">Cintura</span>
-        <span class="value">{{ record.cintura || 82 }} cm</span>
+        <span class="value">{{ record.cintura ?? '—' }} cm</span>
       </div>
       <div class="measurement-item">
         <span class="label">Cadera</span>
-        <span class="value">{{ record.cadera || 98 }} cm</span>
+        <span class="value">{{ record.cadera ?? '—' }} cm</span>
       </div>
       <div class="measurement-item">
         <span class="label">Bíceps</span>
-        <span class="value">{{ record.biceps || 35 }} cm</span>
+        <span class="value">{{ record.biceps ?? '—' }} cm</span>
       </div>
       <div class="measurement-item">
         <span class="label">Muslo</span>
-        <span class="value">{{ record.muslo || 56 }} cm</span>
+        <span class="value">{{ record.muslo ?? '—' }} cm</span>
       </div>
     </div>
   </div>

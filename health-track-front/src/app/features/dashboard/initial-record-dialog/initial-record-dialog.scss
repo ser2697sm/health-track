@@ -1,0 +1,68 @@
+.initial-record-dialog {
+  padding: 24px;
+  max-width: 620px;
+}
+
+.dialog-header {
+  margin-bottom: 24px;
+  text-align: center;
+
+  h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+  }
+
+  .subtitle {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+  }
+}
+
+.section {
+  margin-bottom: 20px;
+
+  h4 {
+    margin: 0 0 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+
+  mat-form-field {
+    flex: 1;
+  }
+
+  &.three-cols {
+    mat-form-field {
+      flex: 1;
+    }
+  }
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+
+  button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    height: 44px;
+    border-radius: 10px;
+    font-weight: 600;
+    width: 100%;
+  }
+}
